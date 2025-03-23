@@ -1,4 +1,4 @@
-# 📦 Refinando um Projeto Conceitual de Banco de Dados – E-COMMERCE
+# 📦 Projeto Conceitual de Banco de Dados — E-Commerce
 
 ---
 
@@ -7,9 +7,10 @@
 O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Commerce, com o objetivo de gerenciar:
 
 - **Clientes (PJ e PF)**
-- **Pedidos**
-- **Pagamentos (múltiplas formas por pedido)**
+- **Produtos e Estoque**
+- **Pedidos e Pagamentos**
 - **Entregas (com status e código de rastreio)**
+- **Fornecedores e Terceiros**
 
 ---
 
@@ -18,83 +19,117 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 ### ✅ Clientes
 - **Clientes podem ser Pessoas Físicas (PF) ou Pessoas Jurídicas (PJ).**
 - **Cada conta é exclusivamente PF ou PJ, nunca ambas.**
-- **A estrutura de dados garante integridade e consistência na identificação do tipo de cliente.**
+- **Os clientes podem realizar pedidos e os dados de entrega são vinculados a cada pedido.**
+
+### ✅ Produtos e Estoque
+- **Produtos são cadastrados e associados a um estoque específico.**
+- **Cada produto possui: Categoria, Descrição e Valor.**
+- **Relação `Produto` - `Estoque`: Um produto pode existir em múltiplos estoques com quantidade específica.**
+- **Produtos são disponibilizados por fornecedores.**
 
 ### ✅ Pedidos
-- **Pedidos podem ter múltiplas formas de pagamento associadas.**
-- **Pedidos possuem um vínculo direto com o processo de entrega.**
+- **Pedidos possuem um cliente associado e podem conter múltiplos produtos.**
+- **A descrição do pedido e o status do pedido são rastreados.**
+- **A entrega de cada pedido é detalhada na tabela `Entrega`.**
 
 ### ✅ Pagamentos
-- **Possibilidade de cadastrar várias formas de pagamento (ex.: Cartão de Crédito, Boleto, Pix, etc.).**
-- **Implementação de uma tabela associativa `Pedido_Pagamento` para armazenar múltiplas formas de pagamento por pedido.**
+- **Pedidos podem ter múltiplas formas de pagamento associadas.**
+- **A tabela `Pedido_pagamento` é uma ponte entre `Pedido` e `Pagamento`, permitindo pagamento misto.**
+- **Tipos de pagamento incluem: Cartão, Pix, Boleto, etc.**
 
 ### ✅ Entregas
 - **Cada pedido possui detalhes da entrega, incluindo:**
-  - **Status do Pedido (ex.: Processando, Enviado, Entregue, Cancelado, etc.).**
-  - **Código de Rastreamento para acompanhamento da entrega.**
+  - **Status da Entrega (Ex.: Enviado, Entregue, Cancelado).**
+  - **Código de Rastreamento para acompanhamento.**
+
+### ✅ Fornecedores e Terceiros
+- **Fornecedores são vinculados aos produtos que disponibilizam para o estoque.**
+- **Terceiros registram produtos vendidos com quantidade específica.**
 
 ---
 
 ## 📂 Tabelas do Banco de Dados
 
-### 1. **Cliente (Genérico)**
+### **Cliente**
 | Campo         | Tipo        | Descrição                          |
 |---------------|-------------|------------------------------------|
-| id            | INT         | Identificador único do cliente.   |
-| tipo_cliente  | VARCHAR(2)   | Indica se é `PF` ou `PJ`.         |
-| nome          | VARCHAR(100) | Nome do cliente.                  |
-| email         | VARCHAR(100) | E-mail do cliente.                |
-| telefone      | VARCHAR(20)  | Telefone para contato.            |
+| idCliente     | INT         | Identificador único do cliente.   |
+| Nome          | VARCHAR(45)  | Nome do cliente.                  |
+| Identificacao | VARCHAR(45)  | CPF ou CNPJ.                      |
+| endereco      | VARCHAR(100) | Endereço do cliente.              |
 
-### 2. **Cliente_PF (Pessoas Físicas)**
+### **Cliente_PJ**
 | Campo         | Tipo        | Descrição                          |
 |---------------|-------------|------------------------------------|
-| id_cliente    | INT         | Identificador único (FK de Cliente).|
-| cpf           | VARCHAR(11)  | CPF do cliente.                   |
-| data_nascimento | DATE       | Data de nascimento.               |
+| idCliente_PJ  | INT         | Identificador único do cliente PJ. |
+| Cliente_idCliente | INT     | Referência ao `Cliente`.           |
+| Razão Social  | VARCHAR(45)  | Razão Social do Cliente PJ.       |
 
-### 3. **Cliente_PJ (Pessoas Jurídicas)**
+### **Cliente_PF**
 | Campo         | Tipo        | Descrição                          |
 |---------------|-------------|------------------------------------|
-| id_cliente    | INT         | Identificador único (FK de Cliente).|
-| cnpj          | VARCHAR(14)  | CNPJ da empresa.                  |
-| razao_social  | VARCHAR(100) | Razão social da empresa.          |
+| idCliente_PF  | INT         | Identificador único do cliente PF. |
+| Cliente_idCliente | INT     | Referência ao `Cliente`.           |
+| CPF           | VARCHAR(11)  | CPF do cliente PF.                |
 
-### 4. **Pedido**
+### **Produto**
 | Campo         | Tipo        | Descrição                          |
 |---------------|-------------|------------------------------------|
-| id            | INT         | Identificador único do pedido.    |
-| id_cliente    | INT         | Identificador do cliente (FK).    |
-| data_pedido   | DATETIME     | Data e hora do pedido.            |
-| valor_total   | DECIMAL(10,2)| Valor total do pedido.            |
+| idProduto     | INT         | Identificador único do produto.   |
+| Categoria     | VARCHAR(45)  | Categoria do produto.             |
+| Descrição     | VARCHAR(45)  | Descrição do produto.             |
+| Valor         | DECIMAL      | Valor do produto.                 |
 
-### 5. **Pagamento**
-| Campo         | Tipo        | Descrição                           |
-|---------------|-------------|-------------------------------------|
-| id            | INT         | Identificador único do pagamento.  |
-| tipo          | VARCHAR(50)  | Tipo de pagamento (Cartão, Pix, etc.).|
-| valor         | DECIMAL(10,2)| Valor do pagamento.                |
-
-### 6. **Pedido_Pagamento (Tabela Associativa)**
+### **Estoque**
 | Campo         | Tipo        | Descrição                          |
 |---------------|-------------|------------------------------------|
-| id_pedido     | INT         | Identificador do pedido (FK).     |
-| id_pagamento  | INT         | Identificador do pagamento (FK).  |
-| valor_parcial | DECIMAL(10,2)| Parte do valor do pedido coberta por esse pagamento.|
+| idEstoque     | INT         | Identificador único do estoque.   |
+| Local         | VARCHAR(45)  | Localização do estoque.           |
 
-### 7. **Entrega**
-| Campo            | Tipo        | Descrição                         |
-|------------------|-------------|-----------------------------------|
-| id               | INT         | Identificador único da entrega.  |
-| id_pedido        | INT         | Identificador do pedido (FK).    |
-| status           | VARCHAR(20)  | Status da entrega (Ex.: Enviado, Entregue, etc.).|
-| codigo_rastreamento | VARCHAR(50) | Código de rastreamento da entrega. |
+### **Estoque_Produto**
+| Campo         | Tipo        | Descrição                          |
+|---------------|-------------|------------------------------------|
+| idEstoque_Produto | INT      | Identificador único.              |
+| Produto_idProduto | INT      | Identificador do produto.         |
+| Quantidade    | INT         | Quantidade disponível.            |
+
+### **Pedido**
+| Campo         | Tipo        | Descrição                          |
+|---------------|-------------|------------------------------------|
+| idPedido      | INT         | Identificador único do pedido.    |
+| Status do pedido | VARCHAR(45) | Status atual do pedido.         |
+| descrição     | VARCHAR(45)  | Descrição detalhada do pedido.    |
+| Frete         | FLOAT        | Valor do frete.                   |
+| Cliente_idCliente | INT     | Identificador do cliente.         |
+
+### **Pagamento**
+| Campo         | Tipo        | Descrição                          |
+|---------------|-------------|------------------------------------|
+| idPagamento   | INT         | Identificador único do pagamento. |
+| Tipo          | VARCHAR(45)  | Tipo de pagamento utilizado.      |
+| Valor         | DECIMAL      | Valor do pagamento.               |
+
+### **Pedido_pagamento**
+| Campo         | Tipo        | Descrição                          |
+|---------------|-------------|------------------------------------|
+| Pagamento_idPagamento | INT | Referência ao `Pagamento`.         |
+| Pedido_idPedido      | INT  | Referência ao `Pedido`.            |
+
+### **Entrega**
+| Campo         | Tipo        | Descrição                          |
+|---------------|-------------|------------------------------------|
+| idEntrega     | INT         | Identificador único da entrega.   |
+| Status        | VARCHAR(45)  | Status atual da entrega.          |
+| Codigo_Rastreamento | VARCHAR(45) | Código de rastreamento.     |
+| Pedido_idPedido | INT       | Referência ao `Pedido`.            |
 
 ---
 
 ## 🔗 Relacionamentos
 
-- A tabela **Cliente** possui relacionamento de 1:1 com as tabelas **Cliente_PF** e **Cliente_PJ**, de acordo com o tipo de cliente.
-- A tabela **Pedido** se relaciona com **Cliente** (1:N), indicando que um cliente pode ter múltiplos pedidos.
-- A tabela **Pedido_Pagamento** serve como ponte entre **Pedido** e **Pagamento**, garantindo a possibilidade de múltiplas formas de pagamento para um único pedido (N:N).
-- A tabela **Entrega** se relaciona com **Pedido** (1:1), indicando que cada pedido possui uma entrega única.
+- **Cliente → Cliente_PJ e Cliente_PF**: Relacionamento 1:1 com chave estrangeira em ambas as tabelas.
+- **Produto → Estoque_Produto**: Relacionamento N:N com uma tabela associativa.
+- **Produto → Fornecedor**: Relacionamento N:N com uma tabela associativa.
+- **Pedido → Produto (Relação de produto/pedido)**: Relacionamento N:N.
+- **Pedido → Pagamento**: Relacionamento N:N com tabela associativa `Pedido_pagamento`.
+- **Pedido → Entrega**: Relacionamento 1:1.
