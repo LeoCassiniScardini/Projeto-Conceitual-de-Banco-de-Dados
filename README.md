@@ -106,7 +106,3 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 ## 📌 Considerações Finais
 
 O modelo conceitual desenvolvido fornece uma base sólida para um sistema de E-Commerce, considerando as especificidades dos clientes (PF e PJ), a flexibilidade dos pagamentos, e o controle detalhado sobre o processo de entrega.  
-
----
-
-Quer que eu ajude a criar o **diagrama relacional (ERD)** deste banco de dados para complementar o README.md? 😊
