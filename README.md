@@ -14,18 +14,12 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 
 ---
 
-## 🔨 Funcionalidades Implementadas
+## 🔨 Funcionalidades Alteradas
 
 ### ✅ Clientes
 - **Clientes podem ser Pessoas Físicas (PF) ou Pessoas Jurídicas (PJ).**
 - **Cada conta é exclusivamente PF ou PJ, nunca ambas.**
 - **Os clientes podem realizar pedidos e os dados de entrega são vinculados a cada pedido.**
-
-### ✅ Produtos e Estoque
-- **Produtos são cadastrados e associados a um estoque específico.**
-- **Cada produto possui: Categoria, Descrição e Valor.**
-- **Relação `Produto` - `Estoque`: Um produto pode existir em múltiplos estoques com quantidade específica.**
-- **Produtos são disponibilizados por fornecedores.**
 
 ### ✅ Pedidos
 - **Pedidos possuem um cliente associado e podem conter múltiplos produtos.**
@@ -42,13 +36,9 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
   - **Status da Entrega (Ex.: Enviado, Entregue, Cancelado).**
   - **Código de Rastreamento para acompanhamento.**
 
-### ✅ Fornecedores e Terceiros
-- **Fornecedores são vinculados aos produtos que disponibilizam para o estoque.**
-- **Terceiros registram produtos vendidos com quantidade específica.**
-
 ---
 
-## 📂 Tabelas do Banco de Dados
+## 📂 Tabelas alteradas/adicionada
 
 ### **Cliente**
 | Campo         | Tipo        | Descrição                          |
@@ -71,27 +61,6 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 | idCliente_PF  | INT         | Identificador único do cliente PF. |
 | Cliente_idCliente | INT     | Referência ao `Cliente`.           |
 | CPF           | VARCHAR(11)  | CPF do cliente PF.                |
-
-### **Produto**
-| Campo         | Tipo        | Descrição                          |
-|---------------|-------------|------------------------------------|
-| idProduto     | INT         | Identificador único do produto.   |
-| Categoria     | VARCHAR(45)  | Categoria do produto.             |
-| Descrição     | VARCHAR(45)  | Descrição do produto.             |
-| Valor         | DECIMAL      | Valor do produto.                 |
-
-### **Estoque**
-| Campo         | Tipo        | Descrição                          |
-|---------------|-------------|------------------------------------|
-| idEstoque     | INT         | Identificador único do estoque.   |
-| Local         | VARCHAR(45)  | Localização do estoque.           |
-
-### **Estoque_Produto**
-| Campo         | Tipo        | Descrição                          |
-|---------------|-------------|------------------------------------|
-| idEstoque_Produto | INT      | Identificador único.              |
-| Produto_idProduto | INT      | Identificador do produto.         |
-| Quantidade    | INT         | Quantidade disponível.            |
 
 ### **Pedido**
 | Campo         | Tipo        | Descrição                          |
@@ -128,8 +97,5 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 ## 🔗 Relacionamentos
 
 - **Cliente → Cliente_PJ e Cliente_PF**: Relacionamento 1:1 com chave estrangeira em ambas as tabelas.
-- **Produto → Estoque_Produto**: Relacionamento N:N com uma tabela associativa.
-- **Produto → Fornecedor**: Relacionamento N:N com uma tabela associativa.
-- **Pedido → Produto (Relação de produto/pedido)**: Relacionamento N:N.
 - **Pedido → Pagamento**: Relacionamento N:N com tabela associativa `Pedido_pagamento`.
 - **Pedido → Entrega**: Relacionamento 1:1.
