@@ -1,6 +1,4 @@
-# 📦 Projeto Conceitual de Banco de Dados — E-Commerce
-
-Este projeto visa criar um modelo conceitual de banco de dados para um sistema de **E-Commerce**, contemplando aspectos como clientes, pedidos, pagamentos e entregas. A proposta busca aprimorar o modelo inicial, implementando novas funcionalidades e garantindo um sistema relacional robusto e coerente.
+# 📦 Refinando um Projeto Conceitual de Banco de Dados – E-COMMERCE
 
 ---
 
@@ -100,9 +98,3 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 - A tabela **Pedido** se relaciona com **Cliente** (1:N), indicando que um cliente pode ter múltiplos pedidos.
 - A tabela **Pedido_Pagamento** serve como ponte entre **Pedido** e **Pagamento**, garantindo a possibilidade de múltiplas formas de pagamento para um único pedido (N:N).
 - A tabela **Entrega** se relaciona com **Pedido** (1:1), indicando que cada pedido possui uma entrega única.
-
----
-
-## 📌 Considerações Finais
-
-O modelo conceitual desenvolvido fornece uma base sólida para um sistema de E-Commerce, considerando as especificidades dos clientes (PF e PJ), a flexibilidade dos pagamentos, e o controle detalhado sobre o processo de entrega.  
