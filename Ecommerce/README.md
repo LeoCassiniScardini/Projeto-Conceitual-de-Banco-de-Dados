@@ -44,9 +44,12 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 | Campo         | Tipo        | Descrição                          |
 |---------------|-------------|------------------------------------|
 | idCliente     | INT         | Identificador único do cliente.   |
-| Nome          | VARCHAR(45)  | Nome do cliente.                  |
-| Identificacao | VARCHAR(45)  | CPF ou CNPJ.                      |
-| endereco      | VARCHAR(100) | Endereço do cliente.              |
+| Pnome          | VARCHAR(45)  | Nome do cliente.                  |
+| NmeioInicial  | VARCHAR(3)  | Abreviação do nome do meio.        |
+| Sobrenome     | VARCHAR(20)  | Sobrenome do cliente.        |
+| CPF           | CHAR(11)     | CPF.                              |
+| endereco      | VARCHAR(45) | Endereço do cliente.              |
+| Data de Nascimento  | DATE   | Data de nascimento do cliente.   |
 
 ### **Cliente_PJ**
 | Campo         | Tipo        | Descrição                          |
@@ -66,10 +69,10 @@ O banco de dados desenvolvido neste projeto é voltado para um sistema de E-Comm
 | Campo         | Tipo        | Descrição                          |
 |---------------|-------------|------------------------------------|
 | idPedido      | INT         | Identificador único do pedido.    |
-| Status do pedido | VARCHAR(45) | Status atual do pedido.         |
+| Status do pedido | ENUM('Em andamento', 'Processando', 'Enviado', 'Entregue') | Status atual do pedido.         |
 | descrição     | VARCHAR(45)  | Descrição detalhada do pedido.    |
-| Frete         | FLOAT        | Valor do frete.                   |
 | Cliente_idCliente | INT     | Identificador do cliente.         |
+| Frete         | FLOAT        | Valor do frete.                   |
 
 ### **Pagamento**
 | Campo         | Tipo        | Descrição                          |
